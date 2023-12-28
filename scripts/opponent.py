@@ -15,20 +15,20 @@ class search:
         self.find_good_opponent() # Find a good opponent
 
     def enough_resources(self) -> bool:
-        name= Utility.get_text_at_position(80, 20, 200, 30) or "NoName"
-        print(f"Opponent name: {name}")
+        name= Utility.get_text_at_position(80, 20, 200, 30) or "-"
+        print(f"{name.capitalize()}:")
 
-        gold = Utility.get_number_at_position(75, 120, 150, 40, name)
+        gold = Utility.get_number_at_position(75, 120, 150, 40)
         gold = gold if gold < 2_000_000 else -2 # If the opponent has more than 2M gold, the reading is wrong
-        print(f"Opponent gold: {gold}")
+        print(f"Gold: {gold}")
 
-        elixar = Utility.get_number_at_position(75, 170, 150, 40, name)
+        elixar = Utility.get_number_at_position(75, 170, 150, 40)
         elixar = elixar if elixar < 2_000_000 else -2 # If the opponent has more than 2M elixar, the reading is wrong
-        print(f"Opponent elixar: {elixar}")
+        print(f"Elixar: {elixar}")
 
-        darkelixar = Utility.get_number_at_position(75, 220, 100, 40, name)
+        darkelixar = Utility.get_number_at_position(75, 220, 100, 40)
         darkelixar = darkelixar if darkelixar < 20_000 else -2 # If the opponent has more than 20k dark elixar, the reading is wrong
-        print(f"Opponent dark elixar: {darkelixar}")
+        print(f"Dark Elixar {darkelixar}")
 
         mean_resources = (gold + elixar + darkelixar*100) / 3
 
@@ -46,6 +46,7 @@ class search:
         while True:
             # Check if the user wants to quit the application
             if keyboard.is_pressed('esc'):
+                print("Application closed. With esc key")
                 break
 
             # Check if the opponent is good

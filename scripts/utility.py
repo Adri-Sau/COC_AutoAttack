@@ -19,7 +19,7 @@ def get_text_at_position(x: int, y: int, width: int, height: int) -> str:
     return text
 
 
-def get_number_at_position(x: int, y: int, width: int, height: int, name: str) -> int:
+def get_number_at_position(x: int, y: int, width: int, height: int) -> int:
 
     image = pyautogui.screenshot(region=(x, y, width, height))
 
@@ -33,3 +33,7 @@ def get_number_at_position(x: int, y: int, width: int, height: int, name: str) -
     except ValueError:
         print(f"{raw_text} -> {text} doen't contain numbers")
         return -1
+    
+def sample_pixel(x: int, y: int) -> tuple:
+    image = pyautogui.screenshot(region=(x, y, 1, 1))
+    return image.getpixel((0, 0))
