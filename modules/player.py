@@ -17,10 +17,11 @@ class army:
                 print("Application closed. With esc key")
                 return False
 
-            if time_remaining == 0:
+            if time_remaining <= 0:
 
                 self.open_army()
-                if Utility.sample_pixel(291, 233) == (142, 190, 45):
+                if Utility.sample_pixel(291, 233)[1] >= 180:
+                    self.close_army()
                     break
 
                 time_remaining_string = Utility.get_text_at_position(990, 215, 160, 25).lower()

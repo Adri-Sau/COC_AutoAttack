@@ -13,7 +13,7 @@ def wait(seconds: int=5) -> None:
 def get_text_at_position(x: int, y: int, width: int, height: int) -> str:
 
     image = pyautogui.screenshot(region=(x, y, width, height))
-    image.save("screenshot.png")
+
     raw_text = pytesseract.image_to_string(image, config="--psm 6")
     list_of_strings = re.findall('[A-Za-z0-9]', raw_text)
     text = "".join(list_of_strings)
@@ -52,3 +52,17 @@ def get_time_seconds(time_string: str) -> int:
         seconds += time_list[i] * 60**i
 
     return seconds
+
+def get_time_string(seconds: int) -> str:
+    days = seconds // 86400
+    seconds -= days * 86400
+
+    hours = seconds // 3600
+    seconds -= hours * 3600
+
+    minutes = seconds // 60
+    seconds -= minutes * 60
+
+    time_string = f"{days}d {hours}h {minutes}m {seconds}s"
+
+    return time_string

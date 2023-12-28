@@ -22,13 +22,13 @@ def main() -> None:
             # Check if the user wants to quit the application
             if keyboard.is_pressed('esc'):
                 break
-
-            print(f"{pyautogui.position()}, {Utility.sample_pixel(pyautogui.position()[0],pyautogui.position()[1])}" )
-            time.sleep(0.5)
+            if keyboard.is_pressed('p'):
+                print(f"{pyautogui.position()}, {Utility.sample_pixel(pyautogui.position()[0],pyautogui.position()[1])}" )
     else:
         Utility.wait(3) # Allow user to change desktop
         if Player.army().is_ready():
             Opponent.search(TARGET_GOLD, TARGET_ELIXAR, TARGET_DARKELIXAR, TIME_SINCE_SKIP)
+            # Opponent.attack(10, 5, True, [True, True, True, True])
 
 
 

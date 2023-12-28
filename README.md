@@ -34,4 +34,6 @@ To make the bot work you need to do some steps:
 
 ## Credits
 
+[![wakatime](https://wakatime.com/badge/user/018bc8cc-b9e0-4d2c-865e-a04eeba9f50e/project/018ca17f-6ad6-4f72-b534-ef8788bbfed4.svg)](https://wakatime.com/badge/user/018bc8cc-b9e0-4d2c-865e-a04eeba9f50e/project/018ca17f-6ad6-4f72-b534-ef8788bbfed4)
+
 Author: @Nano042101
