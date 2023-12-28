@@ -1,0 +1,8 @@
+# Ignore all files in .venv folder
+.venv/*
+
+# Ignore all files in images folder
+img/*
+
+
+
