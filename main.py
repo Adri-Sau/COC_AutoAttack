@@ -17,7 +17,7 @@ TIME_SINCE_SKIP = 5
 def main() -> None:
     print("Application started.\n")
 
-    if input("Press D for debug mode, or press any other key to continue:") == "d":
+    if input("Press D for debug mode, or press any other key to continue:\n") == "d":
         while True:
             # Check if the user wants to quit the application
             if keyboard.is_pressed('esc'):
@@ -27,8 +27,9 @@ def main() -> None:
             time.sleep(0.5)
     else:
         Utility.wait(3) # Allow user to change desktop
-        Player.army_ready()
-        Opponent.search(TARGET_GOLD, TARGET_ELIXAR, TARGET_DARKELIXAR, TIME_SINCE_SKIP)
+        if Player.army().is_ready():
+            Opponent.search(TARGET_GOLD, TARGET_ELIXAR, TARGET_DARKELIXAR, TIME_SINCE_SKIP)
+
 
 
 if __name__ == '__main__':
