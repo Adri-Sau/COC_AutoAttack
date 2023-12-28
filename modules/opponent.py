@@ -38,7 +38,6 @@ class search:
             return False
         
     def find_good_opponent(self) -> None:
-        time.sleep(3) # Allow user to change desktop
         pyautogui.click(101, 970) # Click the attack button
         pyautogui.click(1350, 625) # Click the search opponent button
         Utility.wait() # Wait for first oponent to be found
