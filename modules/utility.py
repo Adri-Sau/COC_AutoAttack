@@ -10,25 +10,28 @@ def wait(seconds: int=5) -> None:
     time.sleep(seconds + random.random()*2 - 1)
 
 
-def get_text_at_position(x: int, y: int, width: int, height: int) -> str:
+def get_text_at_position(x: int, y: int, width: int, height: int, screenshot: bool=False) -> str:
 
     image = pyautogui.screenshot(region=(x, y, width, height))
 
     raw_text = pytesseract.image_to_string(image, config="--psm 6")
     list_of_strings = re.findall('[A-Za-z0-9]', raw_text)
     text = "".join(list_of_strings)
+    if screenshot:
+        image.save(f"images/{text}_screenshot.png")
 
     return text
 
 
-def get_number_at_position(x: int, y: int, width: int, height: int) -> int:
+def get_number_at_position(x: int, y: int, width: int, height: int, screenshot: bool=False) -> int:
 
     image = pyautogui.screenshot(region=(x, y, width, height))
 
-    raw_text = pytesseract.image_to_string(image, config="--psm 6").replace("s", "5").replace("S", "5")
-    raw_text = raw_text.replace("\n", "")
+    raw_text = pytesseract.image_to_string(image, config="--psm 6").replace("s", "5").replace("S", "5").replace("O", "0").replace("o", "0").replace("l", "1").replace("I", "1").replace("i", "1").replace("B", "8").replace("b", "8").replace("q", "9").replace("Q", "9").replace("g", "9").replace("G", "9").replace("z", "2").replace("Z", "2").replace("a", "4").replace("A", "4").replace("t", "7").replace("T", "7").replace("j", "7").replace("J", "7").replace("f", "7").replace("F", "7").replace("e", "3").replace("E", "3").replace("c", "0").replace("C", "0").replace("d", "0").replace("D", "0").replace("u", "0").replace("U", "0").replace("v", "0").replace("V", "0").replace("w", "0").replace("W", "0").replace("x", "0").replace("X", "0").replace("y", "0").replace("Y", "0")
     list_of_strings = re.findall(r'\d', raw_text)
     text = "".join(list_of_strings)
+    if screenshot:
+        image.save(f"images/{text}_screenshot.png")
 
     try:
         return int(text)

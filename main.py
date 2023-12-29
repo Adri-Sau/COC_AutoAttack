@@ -8,11 +8,11 @@ import modules.utility as Utility
 
 pytesseract.pytesseract.tesseract_cmd = 'E:/Programmi/Tesseract/tesseract.exe'
 
-TARGET_GOLD = 800_000
-TARGET_ELIXAR = 800_000
-TARGET_DARKELIXAR = 8_000
+TARGET_GOLD = 600_000
+TARGET_ELIXAR = 600_000
+TARGET_DARKELIXAR = 6_000
 
-TIME_SINCE_SKIP = 5
+TIME_SINCE_SKIP = 4
 
 def main() -> None:
     print("Application started.\n")
@@ -28,7 +28,7 @@ def main() -> None:
         Utility.wait(3) # Allow user to change desktop
         if Player.army().is_ready():
             Opponent.search(TARGET_GOLD, TARGET_ELIXAR, TARGET_DARKELIXAR, TIME_SINCE_SKIP)
-            # Opponent.attack(10, 5, True, [True, True, True, True])
+            Opponent.attack(10, 5, True, [True, True, True, False])
 
 
 

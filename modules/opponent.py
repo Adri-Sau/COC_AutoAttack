@@ -15,23 +15,24 @@ class search:
 
     def enough_resources(self) -> bool:
         name= Utility.get_text_at_position(80, 20, 200, 30) or "-"
-        print(f"{name.capitalize()}:")
 
         gold = Utility.get_number_at_position(75, 120, 150, 40)
         gold = gold if gold < 2_000_000 else -2 # If the opponent has more than 2M gold, the reading is wrong
-        print(f"Gold: {gold}")
 
         elixar = Utility.get_number_at_position(75, 170, 150, 40)
         elixar = elixar if elixar < 2_000_000 else -2 # If the opponent has more than 2M elixar, the reading is wrong
-        print(f"Elixar: {elixar}")
 
         darkelixar = Utility.get_number_at_position(75, 220, 100, 40)
         darkelixar = darkelixar if darkelixar < 20_000 else -2 # If the opponent has more than 20k dark elixar, the reading is wrong
-        print(f"Dark Elixar {darkelixar}")
 
         mean_resources = (gold + elixar + darkelixar*100) / 3
 
         if (gold > self.target_gold and elixar > self.target_elixar and darkelixar > self.target_darkelixar) or mean_resources > self.target_mean_resources:
+            print("Found good opponent.\n")
+            print(f"{name.capitalize()}:")
+            print(f"Gold: {gold}")
+            print(f"Elixar: {elixar}")
+            print(f"Dark Elixar {darkelixar}\n")
             return True
         else:
             return False
@@ -49,10 +50,8 @@ class search:
 
             # Check if the opponent is good
             if self.enough_resources():
-                print("Found good opponent!")
                 break
             else: 
-                print("Opponent not good enough, searching for new opponent...\n")
                 pyautogui.click(1780, 650) # Click the search opponent button
                 Utility.wait() # Wait for opponent to be found
 
@@ -66,45 +65,83 @@ class attack:
         self.attack_opponent() # Attack the opponent
 
     def attack_opponent(self) -> None:
-        # Todo: Finish this function
 
+        # Siege machine select and deploy 
         if self.siege:
-            pyautogui.press("z") # Select the siege machine
-            pyautogui.click(1780, 650) # deploy the siege machine
+            self.deploy_select(382, 810)
+            self.deploy_select(285, 416)
         
+        # King select and deploy
         if self.heroes[0]:
-            pyautogui.press("q") # Select the king
-            pyautogui.click(1780, 650) # deploy the king
+            self.deploy_select(516, 810)
+            self.deploy_select(193, 624)
 
+        # Queen select, deploy and activate ability
         if self.heroes[1]:
-            pyautogui.press("w") # Select the queen
-            pyautogui.click(1780, 650) # deploy the queen
-            pyautogui.press("w") # deploy the queen ability
+            self.deploy_select(520, 990)
+            self.deploy_select(258, 431)
+            self.deploy_select(520, 990)
 
+        # Royal champion select and deploy
         if self.heroes[3]:
-            pyautogui.press("r") # Select the royal champion
-            pyautogui.click(1780, 650) # deploy the royal champion
+            self.deploy_select(650, 990)
+            self.deploy_select(174, 625)
 
-        pyautogui.press("1") # Select the troops
-        pyautogui.moveTo(1780, 650) # Go to the top of the deployment area
-        pyautogui.dragTo(1780, 650, duration=3) # Deploy the troops
+        # Troops select and deploy
+        if self.troops >= 1:
+            self.deploy_select(236, 810)
+            self.drag_deploy(130, 407, 130, 566, 0.2*self.troops)
 
+        # Warden select and deploy
         if self.heroes[2]:
-            pyautogui.press("e") # Select the warden
-            pyautogui.click(1780, 650) # deploy the warden
+            self.deploy_select(645, 810)
+            self.deploy_select(35, 493)
 
-        pyautogui.press("a") # Select fury potions
-        Utility.wait(20)
-        pyautogui.click(1780, 650) if self.potions >= 1 else None # Deploy first potion
-        pyautogui.click(1780, 650) if self.potions >= 2 else None # Deploy second potion
+        # Spells select and deploy
         Utility.wait(10)
+        if self.potions >= 1:
+            self.deploy_select(790, 810)
+            self.deploy_select(598, 349)
+        self.deploy_select(600, 605) if self.potions >= 2 else None
 
-        pyautogui.click(1780, 650) if self.potions >= 3 else None # Deploy third potion
-        pyautogui.click(1780, 650) if self.potions >= 4 else None # Deploy fourth potion
-        pyautogui.click(1780, 650) if self.potions >= 5 else None # Deploy fifth potion
+        # Warden ability
+        Utility.wait(5)
+        self.deploy_select(645, 810) if self.heroes[2] else None
 
-        Utility.wait(2*60) # Wait for the attack to finish
-        pyautogui.click(1780, 650) # Click the return home button
+        # Spells select and deploy
+        Utility.wait(10)
+        if self.potions >= 3:
+            self.deploy_select(790, 810)
+            self.deploy_select(819, 488)
+        self.deploy_select(813, 243) if self.potions >= 4 else None
+        self.deploy_select(826, 697) if self.potions >= 5 else None
+
+        # Finish attack
+        Utility.wait(2*60)
+        self.get_loot_taken()
+        pyautogui.click(957, 925)
+
+        # Todo: Check for star bonus (956, 778) (255,255,255)
+
+    def deploy_select(self, x: int, y: int) -> None:
+        Utility.wait(1)
+        pyautogui.click(x, y)
+        
+
+    def drag_deploy(self, x1: int, y1: int, x2: int, y2: int, duration) -> None:
+        Utility.wait(1)
+        pyautogui.moveTo(x1, y1)
+        pyautogui.dragTo(x2, y2, duration)      
+
+    def get_loot_taken(self) -> None:
+        print("Loot taken:")
+        gold = Utility.get_number_at_position(750, 450, 220, 50, True)
+        print(f"Gold: {gold}")
+        elixar = Utility.get_number_at_position(750, 520, 220, 50, True)
+        print(f"Elixar: {elixar}")
+        darkelixar = Utility.get_number_at_position(810, 600, 170, 50, True)
+        print(f"Dark Elixar: {darkelixar}")
+
 
 
         

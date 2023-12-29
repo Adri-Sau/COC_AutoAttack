@@ -17,7 +17,7 @@ class army:
                 print("Application closed. With esc key")
                 return False
 
-            if time_remaining <= 0:
+            if time_remaining == 0:
 
                 self.open_army()
                 if Utility.sample_pixel(291, 233)[1] >= 180:
@@ -28,8 +28,8 @@ class army:
                 time_remaining = Utility.get_time_seconds(time_remaining_string)
 
                 self.close_army()
-                print(f"Army not ready, {time_remaining} left")
-                Utility.wait(1)
-                time_remaining -= 1
+                print(f"Army not ready, {Utility.get_time_string(time_remaining)} left")
+                Utility.wait(time_remaining)
+                time_remaining = 0
 
         return True
