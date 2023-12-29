@@ -1,35 +1,35 @@
 from . import utility as Utility
 import pyautogui
-import keyboard
 
 class army:
-    def open_army(self) -> None:
+    def open(self) -> None:
         pyautogui.click(60, 833)
+        Utility.wait(1)
 
-    def close_army(self) -> None:
+    def close(self) -> None:
         pyautogui.click(1619, 137)
+        Utility.wait(1)
 
-    def is_ready(self) -> True:
-        time_remaining = 0
-        while True:
-            # Check if the user wants to quit the application 
-            if keyboard.is_pressed('esc'):
-                print("Application closed. With esc key")
-                return False
+    def is_ready(self) -> int | None:
+        self.open()
+        if Utility.sample_pixel(291, 233)[1] >= 180:
+            self.close()
+            return 0
 
-            if time_remaining == 0:
+        time_remaining_string = Utility.get_text_at_position(1020, 215, 100, 22).lower()
+        time_remaining = Utility.get_time_seconds(time_remaining_string)
+        print(f"time_remaining_string: {time_remaining_string}")
+        print(f"time_remaining: {time_remaining}")
 
-                self.open_army()
-                if Utility.sample_pixel(291, 233)[1] >= 180:
-                    self.close_army()
-                    break
+        self.close()
+        # print(f"Army not ready, {Utility.get_time_string(time_remaining)} left")
+        return time_remaining if time_remaining >= 0 else None
 
-                time_remaining_string = Utility.get_text_at_position(990, 215, 160, 25).lower()
-                time_remaining = Utility.get_time_seconds(time_remaining_string)
-
-                self.close_army()
-                print(f"Army not ready, {Utility.get_time_string(time_remaining)} left")
-                Utility.wait(time_remaining)
-                time_remaining = 0
-
-        return True
+    def train_same(self) -> None:
+        self.open()
+        pyautogui.click(1430, 150)
+        Utility.wait(1)
+        pyautogui.click(1545, 315)
+        Utility.wait(1)
+        self.close()
+        print("Army trained\n")

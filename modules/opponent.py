@@ -44,10 +44,9 @@ class search:
 
         while True:
             # Check if the user wants to quit the application
-            if keyboard.is_pressed('esc'):
-                print("Application closed. With esc key")
+            if keyboard.is_pressed('space'):
+                print("Chose player manually.")
                 break
-
             # Check if the opponent is good
             if self.enough_resources():
                 break
@@ -69,7 +68,7 @@ class attack:
         # Siege machine select and deploy 
         if self.siege:
             self.deploy_select(382, 810)
-            self.deploy_select(285, 416)
+            self.deploy_select(324, 424)
         
         # King select and deploy
         if self.heroes[0]:
@@ -79,7 +78,8 @@ class attack:
         # Queen select, deploy and activate ability
         if self.heroes[1]:
             self.deploy_select(520, 990)
-            self.deploy_select(258, 431)
+            self.deploy_select(296, 439)
+            Utility.wait(2)
             self.deploy_select(520, 990)
 
         # Royal champion select and deploy
@@ -90,28 +90,28 @@ class attack:
         # Troops select and deploy
         if self.troops >= 1:
             self.deploy_select(236, 810)
-            self.drag_deploy(130, 407, 130, 566, 0.2*self.troops)
+            self.drag_deploy(242, 449, 229, 551, 0.2*self.troops)
 
         # Warden select and deploy
         if self.heroes[2]:
             self.deploy_select(645, 810)
-            self.deploy_select(35, 493)
+            self.deploy_select(190, 487)
 
         # Spells select and deploy
         Utility.wait(10)
         if self.potions >= 1:
-            self.deploy_select(790, 810)
+            self.deploy_select(517, 817)
             self.deploy_select(598, 349)
         self.deploy_select(600, 605) if self.potions >= 2 else None
 
         # Warden ability
         Utility.wait(5)
-        self.deploy_select(645, 810) if self.heroes[2] else None
+        self.deploy_select(517, 817) if self.heroes[2] else None
 
         # Spells select and deploy
-        Utility.wait(10)
+        Utility.wait(5)
         if self.potions >= 3:
-            self.deploy_select(790, 810)
+            self.deploy_select(721, 813)
             self.deploy_select(819, 488)
         self.deploy_select(813, 243) if self.potions >= 4 else None
         self.deploy_select(826, 697) if self.potions >= 5 else None
@@ -120,14 +120,20 @@ class attack:
         Utility.wait(2*60)
         self.get_loot_taken()
         pyautogui.click(957, 925)
+        Utility.wait(3)
 
-        # Todo: Check for star bonus (956, 778) (255,255,255)
+        # Check for star bonus
+        self.check_star_bonus()
 
+    def check_star_bonus(self) -> None:
+        if Utility.sample_pixel(956, 778) == (255, 255, 255):
+            pyautogui.click(956, 778)
+            Utility.wait(1)
+        
     def deploy_select(self, x: int, y: int) -> None:
         Utility.wait(1)
         pyautogui.click(x, y)
         
-
     def drag_deploy(self, x1: int, y1: int, x2: int, y2: int, duration) -> None:
         Utility.wait(1)
         pyautogui.moveTo(x1, y1)
@@ -135,11 +141,11 @@ class attack:
 
     def get_loot_taken(self) -> None:
         print("Loot taken:")
-        gold = Utility.get_number_at_position(750, 450, 220, 50, True)
+        gold = Utility.get_number_at_position(750, 450, 230, 50)
         print(f"Gold: {gold}")
-        elixar = Utility.get_number_at_position(750, 520, 220, 50, True)
+        elixar = Utility.get_number_at_position(750, 520, 230, 50)
         print(f"Elixar: {elixar}")
-        darkelixar = Utility.get_number_at_position(810, 600, 170, 50, True)
+        darkelixar = Utility.get_number_at_position(810, 580, 170, 50)
         print(f"Dark Elixar: {darkelixar}")
 
 
