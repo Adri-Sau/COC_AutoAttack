@@ -17,13 +17,13 @@ class search:
         name= Utility.get_text_at_position(80, 20, 200, 30) or "-"
 
         gold = Utility.get_number_at_position(75, 120, 150, 40)
-        gold = gold if gold < 2_000_000 else -2 # If the opponent has more than 2M gold, the reading is wrong
+        gold = gold if gold < 1_500_000 else -2 # If the opponent has more than 2M gold, the reading is wrong
 
         elixar = Utility.get_number_at_position(75, 170, 150, 40)
-        elixar = elixar if elixar < 2_000_000 else -2 # If the opponent has more than 2M elixar, the reading is wrong
+        elixar = elixar if elixar < 1_500_000 else -2 # If the opponent has more than 2M elixar, the reading is wrong
 
         darkelixar = Utility.get_number_at_position(75, 220, 100, 40)
-        darkelixar = darkelixar if darkelixar < 20_000 else -2 # If the opponent has more than 20k dark elixar, the reading is wrong
+        darkelixar = darkelixar if darkelixar < 15_000 else -2 # If the opponent has more than 20k dark elixar, the reading is wrong
 
         mean_resources = (gold + elixar + darkelixar*100) / 3
 
@@ -67,54 +67,54 @@ class attack:
 
         # Siege machine select and deploy 
         if self.siege:
-            self.deploy_select(382, 810)
-            self.deploy_select(324, 424)
+            self.click_at(382, 810)
+            self.click_at(324, 424)
         
         # King select and deploy
         if self.heroes[0]:
-            self.deploy_select(516, 810)
-            self.deploy_select(193, 624)
+            self.click_at(516, 810)
+            self.click_at(193, 624)
 
         # Queen select, deploy and activate ability
         if self.heroes[1]:
-            self.deploy_select(520, 990)
-            self.deploy_select(296, 439)
+            self.click_at(520, 990)
+            self.click_at(296, 439)
             Utility.wait(2)
-            self.deploy_select(520, 990)
+            self.click_at(520, 990)
 
         # Royal champion select and deploy
         if self.heroes[3]:
-            self.deploy_select(650, 990)
-            self.deploy_select(174, 625)
+            self.click_at(650, 990)
+            self.click_at(174, 625)
 
         # Troops select and deploy
         if self.troops >= 1:
-            self.deploy_select(236, 810)
+            self.click_at(236, 810)
             self.drag_deploy(242, 449, 229, 551, 0.2*self.troops)
 
         # Warden select and deploy
         if self.heroes[2]:
-            self.deploy_select(645, 810)
-            self.deploy_select(190, 487)
+            self.click_at(645, 810)
+            self.click_at(190, 487)
 
         # Spells select and deploy
         Utility.wait(10)
         if self.potions >= 1:
-            self.deploy_select(517, 817)
-            self.deploy_select(598, 349)
-        self.deploy_select(600, 605) if self.potions >= 2 else None
+            self.click_at(517, 817)
+            self.click_at(598, 349)
+        self.click_at(600, 605) if self.potions >= 2 else None
 
         # Warden ability
         Utility.wait(5)
-        self.deploy_select(517, 817) if self.heroes[2] else None
+        self.click_at(517, 817) if self.heroes[2] else None
 
         # Spells select and deploy
         Utility.wait(5)
         if self.potions >= 3:
-            self.deploy_select(721, 813)
-            self.deploy_select(819, 488)
-        self.deploy_select(813, 243) if self.potions >= 4 else None
-        self.deploy_select(826, 697) if self.potions >= 5 else None
+            self.click_at(721, 813)
+            self.click_at(819, 488)
+        self.click_at(813, 243) if self.potions >= 4 else None
+        self.click_at(826, 697) if self.potions >= 5 else None
 
         # Finish attack
         Utility.wait(2*60)
@@ -130,7 +130,7 @@ class attack:
             pyautogui.click(956, 778)
             Utility.wait(1)
         
-    def deploy_select(self, x: int, y: int) -> None:
+    def click_at(self, x: int, y: int) -> None:
         Utility.wait(1)
         pyautogui.click(x, y)
         

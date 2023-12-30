@@ -4,5 +4,7 @@
 # Ignore all files in images folder
 img/*
 
+#Ignore all vscode settings
+.vscode/*
 
 

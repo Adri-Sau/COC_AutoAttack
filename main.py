@@ -2,6 +2,7 @@ import pyautogui
 import time
 import keyboard
 import pytesseract
+import sys
 import modules.opponent as Opponent
 import modules.player as Player
 import modules.utility as Utility
