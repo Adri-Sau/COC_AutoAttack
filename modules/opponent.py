@@ -2,8 +2,16 @@ from . import utility as Utility
 import pyautogui
 import keyboard
 
+# Constants for the troops deployement bar 
+BAR_POSITION = (0, 747)
+
+CARD_SIZE = (111, 147)
+CARD_SPACE_SIZE = (9, 22)
+CARDS_OFFSET = (155, 10)
+CARDS_PACKS_SPACE = 23
+
 class search:
-    def __init__(self, target_gold=800_000, target_elixar=800_000, target_darkelixar=8_000, time_since_skip=5):
+    def __init__(self, target_gold=700_000, target_elixar=700_000, target_darkelixar=7_000, time_since_skip=5):
         self.target_gold = target_gold
         self.target_elixar = target_elixar
         self.target_darkelixar = target_darkelixar
@@ -11,7 +19,7 @@ class search:
 
         self.time_since_skip = time_since_skip
 
-        self.find_good_opponent() # Find a good opponent
+        self.good_opponent() # Find a good opponent
 
     def enough_resources(self) -> bool:
         name= Utility.get_text_at_position(80, 20, 200, 30) or "-"
@@ -37,7 +45,7 @@ class search:
         else:
             return False
         
-    def find_good_opponent(self) -> None:
+    def good_opponent(self) -> None:
         pyautogui.click(101, 970) # Click the attack button
         pyautogui.click(1350, 625) # Click the search opponent button
         Utility.wait() # Wait for first oponent to be found
@@ -54,6 +62,7 @@ class search:
                 pyautogui.click(1780, 650) # Click the search opponent button
                 Utility.wait() # Wait for opponent to be found
 
+
 class attack:
     def __init__(self, troops: int, potions: int, siege: True, heroes: list) -> None:
         self.potions = potions
@@ -61,57 +70,67 @@ class attack:
         self.heroes = heroes # (king, queen, warden, royal champion)
         self.siege = siege
 
-        self.attack_opponent() # Attack the opponent
+        self.start() # Attack the opponent
 
-    def attack_opponent(self) -> None:
+    def start(self) -> None:
 
         # Siege machine select and deploy 
         if self.siege:
-            self.click_at(382, 810)
+            self.click_at(  BAR_POSITION[0]+CARDS_OFFSET[0]+int((CARD_SIZE[0])*1.5)+(CARD_SPACE_SIZE[0])*0+(CARDS_PACKS_SPACE)*1,
+                            BAR_POSITION[1]+CARDS_OFFSET[1]+int((CARD_SIZE[1])*0.5)+(CARD_SPACE_SIZE[1])*0)
             self.click_at(324, 424)
         
         # King select and deploy
         if self.heroes[0]:
-            self.click_at(516, 810)
+            self.click_at(  BAR_POSITION[0]+CARDS_OFFSET[0]+int((CARD_SIZE[0])*2.5)+(CARD_SPACE_SIZE[0])*0+(CARDS_PACKS_SPACE)*2,
+                            BAR_POSITION[1]+CARDS_OFFSET[1]+int((CARD_SIZE[1])*0.5)+(CARD_SPACE_SIZE[1])*0)
             self.click_at(193, 624)
 
         # Queen select, deploy and activate ability
         if self.heroes[1]:
-            self.click_at(520, 990)
+            self.click_at(  BAR_POSITION[0]+CARDS_OFFSET[0]+int((CARD_SIZE[0])*2.5)+(CARD_SPACE_SIZE[0])*0+(CARDS_PACKS_SPACE)*2,
+                            BAR_POSITION[1]+CARDS_OFFSET[1]+int((CARD_SIZE[1])*1.5)+(CARD_SPACE_SIZE[1])*1)
             self.click_at(296, 439)
             Utility.wait(2)
-            self.click_at(520, 990)
+            self.click_at(  BAR_POSITION[0]+CARDS_OFFSET[0]+int((CARD_SIZE[0])*2.5)+(CARD_SPACE_SIZE[0])*0+(CARDS_PACKS_SPACE)*2,
+                            BAR_POSITION[1]+CARDS_OFFSET[1]+int((CARD_SIZE[1])*1.5)+(CARD_SPACE_SIZE[1])*1)
 
         # Royal champion select and deploy
         if self.heroes[3]:
-            self.click_at(650, 990)
+            self.click_at(  BAR_POSITION[0]+CARDS_OFFSET[0]+int((CARD_SIZE[0])*3.5)+(CARD_SPACE_SIZE[0])*1+(CARDS_PACKS_SPACE)*2,
+                            BAR_POSITION[1]+CARDS_OFFSET[1]+int((CARD_SIZE[1])*1.5)+(CARD_SPACE_SIZE[1])*1)
             self.click_at(174, 625)
 
         # Troops select and deploy
         if self.troops >= 1:
-            self.click_at(236, 810)
+            self.click_at(  BAR_POSITION[0]+CARDS_OFFSET[0]+int((CARD_SIZE[0])*0.5)+(CARD_SPACE_SIZE[0])*0+(CARDS_PACKS_SPACE)*0,
+                            BAR_POSITION[1]+CARDS_OFFSET[1]+int((CARD_SIZE[1])*0.5)+(CARD_SPACE_SIZE[1])*0)
             self.drag_deploy(242, 449, 229, 551, 0.2*self.troops)
 
         # Warden select and deploy
         if self.heroes[2]:
-            self.click_at(645, 810)
+            self.click_at(  BAR_POSITION[0]+CARDS_OFFSET[0]+int((CARD_SIZE[0])*3.5)+(CARD_SPACE_SIZE[0])*1+(CARDS_PACKS_SPACE)*2,
+                            BAR_POSITION[1]+CARDS_OFFSET[1]+int((CARD_SIZE[1])*0.5)+(CARD_SPACE_SIZE[1])*0)
             self.click_at(190, 487)
 
         # Spells select and deploy
         Utility.wait(10)
         if self.potions >= 1:
-            self.click_at(517, 817)
+            self.click_at(  BAR_POSITION[0]+CARDS_OFFSET[0]+int((CARD_SIZE[0])*4.5)+(CARD_SPACE_SIZE[0])*1+(CARDS_PACKS_SPACE)*3,
+                            BAR_POSITION[1]+CARDS_OFFSET[1]+int((CARD_SIZE[1])*0.5)+(CARD_SPACE_SIZE[1])*0)
             self.click_at(598, 349)
         self.click_at(600, 605) if self.potions >= 2 else None
 
         # Warden ability
         Utility.wait(5)
-        self.click_at(517, 817) if self.heroes[2] else None
+        self.click_at(  BAR_POSITION[0]+CARDS_OFFSET[0]+int((CARD_SIZE[0])*3.5)+(CARD_SPACE_SIZE[0])*1+(CARDS_PACKS_SPACE)*2,
+                        BAR_POSITION[1]+CARDS_OFFSET[1]+int((CARD_SIZE[1])*0.5)+(CARD_SPACE_SIZE[1])*0) if self.heroes[2] else None
 
         # Spells select and deploy
         Utility.wait(5)
         if self.potions >= 3:
-            self.click_at(721, 813)
+            self.click_at(  BAR_POSITION[0]+CARDS_OFFSET[0]+int((CARD_SIZE[0])*4.5)+(CARD_SPACE_SIZE[0])*1+(CARDS_PACKS_SPACE)*3,
+                            BAR_POSITION[1]+CARDS_OFFSET[1]+int((CARD_SIZE[1])*0.5)+(CARD_SPACE_SIZE[1])*0)
             self.click_at(819, 488)
         self.click_at(813, 243) if self.potions >= 4 else None
         self.click_at(826, 697) if self.potions >= 5 else None
