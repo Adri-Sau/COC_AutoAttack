@@ -22,7 +22,7 @@ class search:
         self.good_opponent() # Find a good opponent
 
     def enough_resources(self) -> bool:
-        name= Utility.get_text_at_position(80, 20, 200, 30) or "-"
+        name = Utility.get_text_at_position(80, 20, 200, 30)
 
         gold = Utility.get_number_at_position(75, 120, 150, 40)
         gold = gold if gold < 1_500_000 else -2 # If the opponent has more than 2M gold, the reading is wrong
