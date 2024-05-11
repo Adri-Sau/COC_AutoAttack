@@ -5,9 +5,9 @@ import keyboard
 # Constants for the troops deployment bar 
 BAR_POSITION = (0, 747)
 
-CARD_SIZE = (111, 147)
+CARD_SIZE = (111, 147) 
 CARD_SPACE_SIZE = (9, 22)
-CARDS_OFFSET = (155, 10)
+CARDS_OFFSET = (215, 10)
 CARDS_PACKS_SPACE = 23
 
 class search:

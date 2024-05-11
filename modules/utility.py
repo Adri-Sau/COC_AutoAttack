@@ -67,17 +67,19 @@ def get_number_at_position(x: int, y: int, width: int, height: int, screenshot: 
     """
     image = pyautogui.screenshot(region=(x, y, width, height))
 
-    raw_text = pytesseract.image_to_string(image, config="--psm 7").replace("s", "5").replace("S", "5").replace("O", "0").replace("o", "0").replace("l", "1").replace("I", "1").replace("i", "1").replace("B", "8").replace("b", "8").replace("q", "9").replace("Q", "9").replace("g", "9").replace("G", "9").replace("z", "2").replace("Z", "2").replace("a", "4").replace("A", "4").replace("t", "7").replace("T", "7").replace("j", "7").replace("J", "7").replace("f", "7").replace("F", "7").replace("e", "3").replace("E", "3").replace("c", "0").replace("C", "0").replace("d", "0").replace("D", "0").replace("u", "0").replace("U", "0").replace("v", "0").replace("V", "0").replace("w", "0").replace("W", "0").replace("x", "0").replace("X", "0").replace("y", "0").replace("Y", "0")
+    raw_text = pytesseract.image_to_string(image, config="--psm 7")
     list_of_strings = re.findall(r'\d', raw_text)
     text = "".join(list_of_strings)
 
+    number = -1
     try:
         number = int(text)
-        if screenshot:
-            image.save(f"images/{number}_{random.randint(0,1_000_000)}_screenshot.png")
-        return number
     except ValueError:
-        get_number_at_position(x-1, y-1, width+2, height+2, screenshot)
+        number = get_number_at_position(x-1, y-1, width+2, height+2, screenshot)
+
+    if screenshot:
+        image.save(f"images/{number}_{random.randint(0,1_000_000)}_screenshot.png")
+    return number
     
 def sample_pixel(x: int, y: int) -> tuple:
     """

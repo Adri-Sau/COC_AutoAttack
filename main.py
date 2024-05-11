@@ -54,7 +54,7 @@ def auto_attack() -> None:
         # If the army is ready, attack and train the same army
         if army_time_remaining != None and army_time_remaining <= 0:
             Opponent.search(TARGET_GOLD, TARGET_ELIXIR, TARGET_DARK_ELIXIR, TIME_SINCE_SKIP)
-            Opponent.attack(10, 5, True, [True, True, True, False])
+            Opponent.attack(10, 5, True, [True, True, True, True])
             Player.army().train_same()
             army_time_remaining = Player.army().is_ready()
 
@@ -67,6 +67,7 @@ def auto_attack() -> None:
 
         time.sleep(1)
         army_time_remaining = army_time_remaining - 1 if army_time_remaining != None else Player.army().is_ready()
+        # print(f"time remaining: {Utility.get_time_string(army_time_remaining)}")
 
 def main() -> None:
     """

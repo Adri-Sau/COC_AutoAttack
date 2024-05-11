@@ -36,7 +36,7 @@ class army:
             time_remaining_string = Utility.get_text_at_position(1020, 215, 100, 22).lower()
             time_remaining = Utility.get_time_seconds(time_remaining_string)
             print(f"time_remaining_string: {time_remaining_string}")
-            print(f"time_remaining: {time_remaining}")
+            print(f"time remaining: {Utility.get_time_string(time_remaining)}")
 
             self.close()
             return time_remaining if time_remaining >= 0 else None
